@@ -8,4 +8,7 @@ repos:
     -   id: check-added-large-files
     -   id: check-toml
     -   id: mixed-line-ending
+-   repo: https://github.com/lorenzwalthert/precommit
+    rev: v0.4.3.9008
+    hooks:
     -   id: roxygenize
