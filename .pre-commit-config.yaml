@@ -13,4 +13,4 @@ repos:
     hooks:
     -   id: roxygenize
         additional_dependencies:
-        - r-lib/deSolve 
+        - deSolve 
