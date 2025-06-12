@@ -15,7 +15,8 @@ Mosquitos of both species include adult disease states of susceptible and
 infectious. Both disease states lay eggs with a similar rate. Infectious vectors
 convey infection to eggs probabilistically.
 
-![](Aly_Figure1.png)
+![Aly_Figure1](https://github.com/user-attachments/assets/8aabfde6-842a-48bc-b63c-06c14f3e03ac)
+
 
 &nbsp;
 
