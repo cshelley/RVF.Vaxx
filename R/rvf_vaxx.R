@@ -60,15 +60,15 @@ rvf_vaxx <- function(t, state, parameters) {
     # Human Hosts:
     dVH1 = nuH*nuTH*(SH + EH + IH + RH) - muH*VH1 - thetaH*VH1
     dVH2 = -muH*VH2 + thetaH*VH1 - rhoVH*VH2
-    dSH = gammaH*NH - betaAH*SH*IA/Na - betaBH*SH*IB/NB + rhoRH*RH - nuH*nuTH*SH + thetaH*VH2 - muH*SH
+    dSH = gammaH*NH - betaAH*SH*IA/Na - betaBH*SH*IB/NB + rhoRH*RH + rhoVH*VH2 - nuH*nuTH*SH - muH*SH
     dEH = betaAH*SH*IA/Na + betaBH*SH*IB/NB - xiH*EH - nuH*nuTH*EH - muH*EH
     dIH = xiH*EH - alphaH*IH - nuH*nuTH*IH - muH*IH
     dRH = alphaH*IH - rhoRH*RH - nuH*nuTH*RH - muH*RH
 
     # Mammalian Hosts:
     dVM1 = nuM*nuTM*(SM + EM + IM + RM) - muM*VM1 - thetaM*VM1
-    dVM2 = -muM*VM2 +thetaM*VM1 - rhoVM*VM2
-    dSM = -betaAM*SM*IA/Na - betaBM*SM*IB/NB + rhoRM*RM - nuM*nuTM*SM + rhoVM*VM - muM*SM + (gamma1*(NM-IM) + gamma2*IM)
+    dVM2 = -muM*VM2 + thetaM*VM1 - rhoVM*VM2
+    dSM = (gamma1*(NM-IM) + gamma2*IM) - betaAM*SM*IA/Na - betaBM*SM*IB/NB + rhoRM*RM + rhoVM*VM2 - nuM*nuTM*SM - muM*SM
     dEM = betaAM*SM*IA/Na + betaBM*SM*IB/NB - xiM*EM - nuM*nuTM*EM - muM*EM
     dIM = xiM*EM - alphaM*IM - nuM*nuTM*IM - muM*IM
     dRM = alphaM*IM - rhoRM*RM - nuM*nuTM*RM - muM*RM
