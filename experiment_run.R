@@ -34,17 +34,17 @@ experiment_run <- function(ID, variable_name, value_name, new_value, brief_descr
 
   # embed default values into a "container"
   container <- list(
-    state = c(VH = 0, SH = 10000, EH = 0, IH = 2, RH = 0,
+    state = c(VH1 = 0, VH2 = 0, SH = 10000, EH = 0, IH = 2, RH = 0,
               SA = 175000, IA = 100, QA = 0, PA = 0,
               SB = 175000, IB = 100, QB = 0, PB = 0,
-              VM = 0, SM = 100000, EM = 0, IM = 200, RM = 0),
+              VM1 = 0, VM2 = 0, SM = 100000, EM = 0, IM = 200, RM = 0),
 
     parameters = c(nuH = 0.001, nuTH = 1, betaHA = 0.89, betaHB = 0.89, xiH = 1/4, alphaH = 1/(3*0.99),
-                   rhoRH = 1/900, rhoVH = 1/360, muH = 4/(2*50*360), gammaH = 4/(2*50*360),
+                   rhoRH = 1/900, rhoVH = 1/360, muH = 4/(2*50*360), gammaH = 4/(2*50*360), thetaH = 1/14,
 
                    nuM = 0.001, nuTM = 1, betaMA = 0.89, betaMB = 0.89, xiM = 24/3.25, alphaM = 1/(3*0.95),
                    rhoRM = 1/900, rhoVM = 1/360, muM = 0.0008,
-                   gamma1 = 0.00082, gamma2 = 0.000082,
+                   gamma1 = 0.00082, gamma2 = 0.000082, thetaM = 1/14,
 
                    betaAH = 0.01, betaAM = 0.01, tauA = 0.2, zetaA = 0.5, omegaA = 0.01,
                    kappaA = 175000, gammaA = 10, omegaA11 = 0.01,
@@ -99,8 +99,9 @@ experiment_run <- function(ID, variable_name, value_name, new_value, brief_descr
       S = model$SH
       E = model$EH
       I = model$IH
-      R = model$VH
-      V = model$VH
+      R = model$RH
+      V1 = model$VH1
+      V2 = model$VH2
 
       par(mar = c(2,4,2,4))
       plot <- plot(S ~ times, type = "l", col = "green", lwd = 2, ylab = NA,
@@ -108,12 +109,13 @@ experiment_run <- function(ID, variable_name, value_name, new_value, brief_descr
       lines(E ~ times, col = "orange", lwd = 2)
       lines(I ~ times, col = "red", lwd = 2)
       lines(R ~ times, col = "purple", lwd = 2)
-      lines(V ~ times, col = "turquoise", lwd = 2)
+      lines(V1 ~ times, col = "turquoise", lwd = 2)
+      lines(V2 ~ times, col = "turquoise4", lwd = 2)
 
       legend(x = 3/4*max(times), y = S[1] - 5,
-             legend=c("S","E", "I", "R", "V"),
+             legend=c("S","E", "I", "R", "V1", "V2"),
              lwd = 4,
-             col = c("green", "orange", "red", "purple", "turquoise"),
+             col = c("green", "orange", "red", "purple", "turquoise", "turquoise4"),
              title= host, bty = "n")
 
     }
@@ -123,7 +125,8 @@ experiment_run <- function(ID, variable_name, value_name, new_value, brief_descr
       E = model$EM
       I = model$IM
       R = model$RM
-      V = model$VM
+      V1 = model$VM1
+      V2 = model$VM2
 
       par(mar = c(2,4,2,4))
       plot <- plot(S ~ times, type = "l", col = "green", lwd = 2,
@@ -131,12 +134,13 @@ experiment_run <- function(ID, variable_name, value_name, new_value, brief_descr
       lines(E ~ times, col = "orange", lwd = 2)
       lines(I ~ times, col = "red", lwd = 2)
       lines(R ~ times, col = "purple", lwd = 2)
-      lines(V ~ times, col = "turquoise", lwd = 2)
+      lines(V1 ~ times, col = "turquoise", lwd = 2)
+      lines(V2 ~ times, col = "turquoise4", lwd = 2)
 
       legend(x = 3/4*max(times), y = S[1] - 5,
-             legend=c("S","E", "I", "R", "V"),
+             legend=c("S","E", "I", "R", "V1", "V2"),
              lwd = 4,
-             col = c("green", "orange", "red", "purple", "turquoise"),
+             col = c("green", "orange", "red", "purple", "turquoise", "turquoise4"),
              title= host, bty = "n")
 
     }
