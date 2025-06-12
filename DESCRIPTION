@@ -1,14 +1,16 @@
 Package: RVF.Vaxx
-Title: What the Package Does (One Line, Title Case)
+Title: Model Rift Valley Fever with Host Vaccination
 Version: 0.0.0.9000
 Authors@R:
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+    person("Courtney", "Shelley", , "courtney.shelley@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-5497-7453"))
+Description: RVF.Vaxx models Rift Valley Fever transmission as a two-host/two-vector system using a deterministic compartmental approach. The model includes vaccination for both hosts without prior disease status testing, a two-week delay to vaccine protection, and waning immunity from both vaccination and natural infection.
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Imports:
     deSolve
+Suggests:
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
