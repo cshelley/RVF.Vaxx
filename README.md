@@ -55,6 +55,8 @@ disease progression.
 
 &nbsp;
 
+![Aly_Figure2](https://github.com/user-attachments/assets/cb593e54-52f7-43b7-aa3b-9060f4aae92e)
+
 #### Sensitivity Model Assumptions: 
 
 1. No births/deaths in human/mammalian hosts.
