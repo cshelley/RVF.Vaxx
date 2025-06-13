@@ -28,7 +28,7 @@
 #'                nuM = 0.1*0.9, rhoVM = 1/(365*2), rhoRM = 1/(365*10),
 #'                betaAM = 0.001, alphaM = 1/7,
 #'                tau = 0.2, omega = 0.01, zeta = 0.05, betaHA = 0.89,
-#'                betaMA = 0.89, muA = 0.1, muE = 0.005, kappaA = 175000)
+#'                betaMA = 0.89, muA = 0.1, muE = 0.005)
 #'
 #' times = seq(1, 500)
 #'
@@ -43,6 +43,7 @@ rvf_sensitivity <- function(t, state, parameters) {
     NH = VH + SH + IH + RH
     NM = VM + SM + IM + RM
     Na = SA + IA
+    kappaA = 175000
 
     # Human Hosts:
     dVH = nuH*(SH + IH + RH) - rhoVH*VH
