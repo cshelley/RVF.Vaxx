@@ -59,8 +59,8 @@ rvf_sensitivity <- function(t, state, parameters) {
     # Vector A:
     dSA <- -betaHA*SA*IH/NH -betaMA*SA*IM/NM + tau*PA - muA*SA
     dIA <- betaHA*SA*IH/NH + betaMA*SA*IM/NM + tau*QA - muA*IA
-    dPA <- -tau*PA + (1-zeta)*omega*QA + omega*SA - muE*PA
-    dQA <- -tau*QA + zeta*omega*QA - muE*QA
+    dPA <- -tau*PA + (1-zeta)*omega*IA + omega*SA - muE*PA
+    dQA <- -tau*QA + zeta*omega*IA - muE*QA
 
     # return rates of change
     list(c(dSH, dIH, dRH, dVH,
