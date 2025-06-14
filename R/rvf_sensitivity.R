@@ -23,12 +23,11 @@
 #'           SA = 175000, IA = 100, QA = 0, PA = 0,
 #'           VM = 0, SM = 100000, IM = 200, RM = 0)
 #'
-#' parameters = c(nuH = 0.1*0.9, rhoVH = 1/(365*7), rhoRH = 1/(365*10),
-#'                betaAH = 0.001, alphaH = 1/7,
-#'                nuM = 0.1*0.9, rhoVM = 1/(365*2), rhoRM = 1/(365*10),
-#'                betaAM = 0.001, alphaM = 1/7,
-#'                tau = 0.2, omega = 0.01, zeta = 0.05, betaHA = 0.89,
-#'                betaMA = 0.89, muA = 0.1, muE = 0.005)
+#' parameters = c(nuH = 0.01, omega = 0.2, alphaH = 1/7, nuM = 0.01, muA = 0.001,
+#'                alphaM = 1/7, tau = 0.2, rhoRM = 1/(365*4), betaM = 0.001,
+#'                rhoRH = 1/(365*7), rhoVM = 1/(365*2), muE = 0.05,
+#'                betaAM = 0.001, betaMA = 0.89, betaHA = 0.89,
+#'                rhoVH = 1/(365*2), zeta = 0.2, betaAH = 0.001)
 #'
 #' times = seq(1, 500)
 #'

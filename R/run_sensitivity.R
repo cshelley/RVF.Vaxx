@@ -3,12 +3,11 @@ library(FME)
 library(parallel)
 
 ## 1. Generate Latin Hypercube Sample
-vars = rbind(betaHA = c(0,1), alphaH = c(0,1),
-             rhoRH = c(0,1), rhoVH = c(0,1), nuH = c(0,1),
-             betaAH = c(0,1), tau = c(0,1), omega = c(0,1), zeta = c(0,1),
-             betaM = c(0,1), alphaM = c(0,1),
-             rhoRM = c(0,1), rhoVM = c(0,1), nuM = c(0,1),
-             betaMA = c(0,1), betaAM = c(0,1), muA = c(0,1), muE = c(0,1))
+vars = rbind(nuH = c(0,1), omega = c(0,1), alphaH = c(0,1), nuM = c(0,1),
+             muA = c(0,1), alphaM = c(0,1), tau = c(0,1), rhoRM = c(0,1),
+             betaM = c(0,1), rhoRH = c(0,1), rhoVM = c(0,1), muE = c(0,1),
+             betaAM = c(0,1), betaMA = c(0,1), betaHA = c(0,1), rhoVH = c(0,1),
+             zeta = c(0,1), betaAH = c(0,1))
 
 parRange <- data.frame(min = vars[,1],
                        max = vars[,2])
@@ -69,17 +68,9 @@ PCC <- pcc(X = LHS, y = unlist(y), rank = TRUE, nboot = 1000, conf = 0.95)
 
 
 ## Plot
+prcc <- PCC$PRCC[order(PCC$PRCC[,1]),]
 
-
-prcc <- PCC$PRCC[,1]
-print(PCC$PRCC)
-barplot(prcc)   #x axes are in the same order as print(PRCC$PRCC) above
-
-
-## Publication quality plot, make sure x axes match pcc$PRCC print out
-par(mfrow = c(1,1), oma = c(1,1,1,1), mar = c(5,4,4,2))
-prcc <- PCC$PRCC[,1]
-barplot(prcc, ylim = c(-0.8,0.8), xaxt='n', ann=FALSE, yaxt='n',
+barplot(PCC$PRCC[,1], ylim = c(-0.8,0.8), xaxt='n', ann=FALSE, yaxt='n',
         xlab = "Parameter Value", ylab = "PRCC")
 abline(h=0, col = "red")
 xes <- c(0.7, 1.9, 3.1, 4.3, 5.5, 6.7, 7.9, 9.1, 10.3, 11.5, 12.7, 13.9,
