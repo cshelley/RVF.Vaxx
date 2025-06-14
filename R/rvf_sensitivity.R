@@ -37,35 +37,35 @@
 #'   data.frame()
 
 rvf_sensitivity <- function(t, state, parameters) {
-  with(as.list(c(state, parameters)),{
+  with(as.list(c(state, parameters)), {
 
-    # support equations
-    NH = VH + SH + IH + RH
-    NM = VM + SM + IM + RM
+    # Support equations:
     Na = SA + IA
-    kappaA = 175000
+    NH = SH + IH + RH + VH
+    NM = SM + IM + RM + VM
 
-    # Human Hosts:
-    dVH = nuH*(SH + IH + RH) - rhoVH*VH
-    dSH = rhoVH*VH - betaAH*SH*IA/Na - nuH*SH + rhoVH*VH + rhoRH*RH
-    dIH = betaAH*SH*IA/Na - alphaH*IH - nuH*IH
-    dRH = alphaH*IH - nuH*RH - rhoRH*RH
+    # Human host:
+    dSH <- -betaAH*SH*IA/Na + rhoRH*RH + rhoVH*VH -nuH*SH
+    dIH <- betaAH*SH*IA/Na - alphaH*IH - nuH*IH
+    dRH <- alphaH*IH - rhoRH*RH - nuH*RH
+    dVH <- -rhoVH*VH + nuH*(SH+IH+RH)
 
-    # Mammalian Hosts:
-    dVM = nuM*(SM + IM + RM) - rhoVM*VM
-    dSM = rhoVM*VM - betaAM*SM*IA/Na - nuM*SM + rhoVM*VM + rhoRM*RM
-    dIM = betaAM*SM*IA/Na - alphaM*IM - nuM*IM
-    dRM = alphaM*IM - nuM*RM - rhoRM*RM
+    # Mammal host:
+    dSM <- -betaAM*SM*IA/Na + rhoRM*RM + rhoVM*VM -nuM*SM
+    dIM <- betaAM*SM*IA/Na - alphaM*IM - nuM*IM
+    dRM <- alphaM*IM - rhoRM*RM - nuM*RM
+    dVM <- -rhoVM*VM + nuM*(SM+IM+RM)
 
-    # Vector:
-    dSA = -betaHA*SA*IH/NH - betaMA*SA*IM/NM + tau*PA - muA*SA
-    dIA = betaHA*SA*IH/NH + betaMA*SA*IM/NM + tau*QA - muA*IA
-    dPA = omega*SA + (1-zeta)*omega*(1-Na/kappaA)*IA - tau*PA - muE*PA
-    dQA = zeta*omega*(1-Na/kappaA)*IA - tau*QA - muE*QA
+    # Vector A:
+    dSA <- -betaHA*SA*IH/NH -betaMA*SA*IM/NM + tau*PA - muA*SA
+    dIA <- betaHA*SA*IH/NH + betaMA*SA*IM/NM + tau*QA - muA*IA
+    dPA <- -tau*PA + (1-zeta)*omega*QA + omega*SA - muE*PA
+    dQA <- -tau*QA + zeta*omega*QA - muE*QA
 
     # return rates of change
-    list(c(dVH, dSH, dIH, dRH,
-           dSA, dIA, dQA, dPA,
-           dVM, dSM, dIM, dRM))
+    list(c(dSH, dIH, dRH, dVH,
+           dSM, dIM, dRM, dVM,
+           dSA, dIA, dPA, dQA))
   })
 }
+
