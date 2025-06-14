@@ -16,7 +16,3 @@ test_that("no negative compartments", {
   expect_true(all(test >= 0))
 
 })
-
-
-
-
