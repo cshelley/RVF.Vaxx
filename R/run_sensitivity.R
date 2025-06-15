@@ -63,27 +63,3 @@ PCC <- pcc(X = LHS, y = unlist(y), rank = TRUE, nboot = 1000, conf = 0.95)
 ## Type "PCC" to see what you actually generated here. That's the order of parameters
 ## you'll see in the plot coming up, but the auto-plot won't give x-axis labels so I'm
 ## doing them by hand.
-
-
-
-
-## Plot
-prcc <- PCC$PRCC[order(PCC$PRCC[,1]),]
-
-barplot(PCC$PRCC[,1], ylim = c(-0.8,0.8), xaxt='n', ann=FALSE, yaxt='n',
-        xlab = "Parameter Value", ylab = "PRCC")
-abline(h=0, col = "red")
-xes <- c(0.7, 1.9, 3.1, 4.3, 5.5, 6.7, 7.9, 9.1, 10.3, 11.5, 12.7, 13.9,
-         15.1, 16.3, 17.5, 18.7, 19.9, 21.1)  # hand-roll plot spots?
-segments(x0=xes, x1=xes, y0 = PCC$PRCC[,4], y1=PCC$PRCC[,5])        # vertical whiskers
-segments(x0=xes-.1, x1=xes+.1, y0 = PCC$PRCC[,4], y1=PCC$PRCC[,4])  # bottom horizontal
-segments(x0=xes-.1, x1=xes+.1, y0 = PCC$PRCC[,5], y1=PCC$PRCC[,5])  # top horizontal
-
-labels = expression(beta[HA], alpha[H], rho[RH], rho[VH], nu[H], beta[AH], tau,
-                    omega, zeta, beta[M], alpha[M], rho[RM], rho[VM], nu[M],
-                    beta[MA], beta[AM], mu[A], mu[E])
-
-axis(1, at = xes, labels = labels)
-axis(2, at = seq(-0.8, 0.8, by = 0.2), label = seq(-0.8, 0.8, by = 0.2),
-     las = 1)
-box()
