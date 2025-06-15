@@ -15,7 +15,7 @@ yes <- c(0.7, 1.9, 3.1, 4.3, 5.5, 6.7, 7.9, 9.1, 10.3, 11.5, 12.7, 13.9,
          15.1, 16.3, 17.5, 18.7, 19.9, 21.1)  # hand-roll plot spots?
 segments(y0=yes, y1=yes, x0 = PCC$PRCC[,4], x1=PCC$PRCC[,5])        # horizonta whiskers
 segments(y0=yes-.1, y1=yes+.1, x0 = PCC$PRCC[,4], x1=PCC$PRCC[,4])  # bottom horizontal
-segments(y0=xes-.1, y1=yes+.1, x0 = PCC$PRCC[,5], x1=PCC$PRCC[,5])  # top horizontal
+segments(y0=yes-.1, y1=yes+.1, x0 = PCC$PRCC[,5], x1=PCC$PRCC[,5])  # top horizontal
 
 ## NOTE: HARD-CODED!!!
 labels = expression(nu[H], omega, alpha[H], nu[M], mu[A], alpha[M], tau,
