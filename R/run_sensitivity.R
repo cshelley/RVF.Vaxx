@@ -16,7 +16,7 @@ parRange <- data.frame(min = vars[,1],
 
 
 LHS <- data.frame(Latinhyper(parRange, 5000))
-## Latin Hypercube sampling, 10000 possible combinations of parameter values
+## Latin Hypercube sampling, 5000 possible combinations of parameter values
 
 #LHSplot <- pairs(LHS, main = "Latin Hypercube")
 ## A picture of the LHS, a variance-covariance matrix. Try rerunning LHS to be

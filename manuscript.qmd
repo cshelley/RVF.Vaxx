@@ -9,21 +9,37 @@ date:   15 June 2025
 
 ## Full Model
 
-The full compartmental model for Rift Valley Fever models a two-host/two-vector system. Hosts include humans and mammals, each moving through disease progression compartments of susceptible (S), exposed (E), infected (I), and recovered (R). Vaccination (\$V_1\$)
+The full compartmental model for Rift Valley Fever models a two-host/two-vector system. Hosts include humans and mammals, each moving through disease progression compartments of susceptible (S), exposed (E), infected (I), and recovered (R). Vaccination occurs without regard to disease status, moving individuals into the $V_1$ compartment. However, vaccination does not provide full protection from infection for two weeks, at which point individuals move into the $V_2$ compartment. Waning immunity from natural infection and immunization is also considered in the model. Vectors include *Culex* and *Aedes* species, with adults moving from susceptible (S) to infectious (I). Susceptible adults lay non-infected eggs (P). Infectious adults may lay infected eggs (Q) or non-infected eggs (P).
 
-## Running Code
+![Figure 1: Full Compartmental Model](Aly_Figure1.png)
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+### Sensitivity Analysis of Simplified RVF Transmission Model
+
+Sensitivity analysis was performed on a simplified Rift Valley Fever transmission model (Figure 2) to understand the effect of model parameters on number of human infections after 50 days of simulated transmission. The simplified model consisted of vaccinated (V), susceptible (S), infected (I), and recovered (R) compartments for two host species (human, mammalian) interacting with a single vector species with compartments of uninfected egg (P), susceptible adult (S), infectious adult (I), and infected egg (Q). Births and deaths were omitted from host species but included for vectors because vector population demographics represent potentially actionable points of intervention. As in the full model, vaccination was assumed to be without regard to disease status and represented with a single parameter ($\nu$), which can be interpreted as any combination of vaccine rate $\times$ vaccine effectiveness. Waning immunity is modeled both from natural infection ($\rho_R$) and from vaccination ($\rho_V$).
+
+![Figure 2: Simplified Compartmental Model](Aly_Figure2.png)
+
+#### Methodology
+
+Sensitivity analysis was performed using the `pcc()` function from the **sensitivity** package in R. First, a Latin Hypercube sampling (LHS) of model parameter values was prepared with 5,000 samples for each parameter drawn from a uniform distribution from 0 to 1. These 5,000 sample parameter draws were then passed to the simplified RVF model function [rvf_sensitivity.R](https://github.com/cshelley/RVF.Vaxx/R/rvf_sensitivity.R) with initial conditions: (human) $S_H$ = 1000, $I_H$ = 0, $R_H$ = 0, $V_H$ = 100; (mammal) $S_M$ = 10000, $I_M$ = 20, $R_M$ = 0, $V_M$ = 100; (vector) $S_A$ = 100000, $I_A$ = 200, $P_A$ = 0, $Q_A$ = 0. The model was allowed to run for 50 time steps and the number of infected humans ($I_H$) at time = 50 was recorded. Each row of the LHS object and the corresponding number of infected humans was then passed to the `pcc()` function and partial rank correlation was performed using 1,000 bootstrap replicates and with a 95% confidence level.
+
+#### Results
 
 ```{r}
-1 + 1
-```
+#| label: PRCC_run
+#| include: false
+#| warning: false
 
-You can add options to executable code like this
+source("https://raw.githubusercontent.com/cshelley/RVF.Vaxx/refs/heads/main/R/rvf_sensitivity.R")
+source("https://raw.githubusercontent.com/cshelley/RVF.Vaxx/refs/heads/main/R/run_sensitivity.R")
+```
 
 ```{r}
-#| echo: false
-2 * 2
+#| label: sensitivity_plot
+#| include: false
+
+source("https://raw.githubusercontent.com/cshelley/RVF.Vaxx/refs/heads/main/R/sensitivity-analysis-plot.R")
+
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+Figure 3: **Partial Rank Correlation Between Human Infections and Simplified Model Parameters.** Latin hypercube sensitivity analysis was performed using partial rank correlation coefficients of simplified model parameters on the number of infected humans on Day 50 of a simulated outbreak. Parameters most negatively correlated with increased human infections (red, lefthand side), representing potential points of intervention on disease transmission, include human vaccination (ρ_H), vector egg lay rate (ω), and human infectious days (α_H). Parameters most positively correlated in red show that human vaccination rate is the parameter most correlated with increased human infections include infection rate from vector to humans (β_AH), probability of vertical transmission from adult to egg (ζ), and waning immunity from vaccine (ρ_VH)."
