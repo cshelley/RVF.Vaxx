@@ -5,6 +5,9 @@ editor: visual
 
 author: Courtney D. Shelley, PhD
 date:   15 June 2025
+webr: 
+  packages:
+    - amsmath
 ---
 
 ## Full Model
@@ -12,6 +15,42 @@ date:   15 June 2025
 The full compartmental model for Rift Valley Fever models a two-host/two-vector system. Hosts include humans and mammals, each moving through disease progression compartments of susceptible (S), exposed (E), infected (I), and recovered (R). Vaccination occurs without regard to disease status, moving individuals into the $V_1$ compartment. However, vaccination does not provide full protection from infection for two weeks, at which point individuals move into the $V_2$ compartment. Waning immunity from natural infection and immunization is also considered in the model. Vectors include *Culex* and *Aedes* species, with adults moving from susceptible (S) to infectious (I). Susceptible adults lay non-infected eggs (P). Infectious adults may lay infected eggs (Q) or non-infected eggs (P).
 
 ![Figure 1: Full Compartmental Model](Aly_Figure1.png)
+
+\
+
+***Model assumptions***. The above compartmental model diagram implies several assumptions:
+
+1.  All human/mammalian births are susceptible; no conferred immunity.
+
+2.  No testing before vaccination; all exposure categories vaccinated at same rate.
+
+3.  Vaccinating exposed humans/mammals prevents conversion to infection.
+
+4.  Waning immunity from recovery and vaccination.
+
+5.  Adjusted birth rate for mammalian host assumes differential births due to maternal infection.
+
+6.  Vector hatch rate is assumed to be independent of disease status.
+
+\
+
+The compartmental model diagram can be translated into a series of 20 ordinary differential equations (ODEs):
+
+***Human Host***, all of the general form "change in disease status over time equals births/deaths $\pm$ disease progression $\pm$ waning immunity $\pm$ vaccination":
+
+```math
+\frac{dH_S}{dt} = \beta*S*I
+```
+
+***Mammalian Host***, identical to human host equations except for birth rate of (\*) = $[\gamma_1(N_M - I_M) + \gamma_2 I_M]$, which implies a differing birth rate in infected mothers not captured by disease-specific mortality and "corrected for population density to simulate removal (sales) (Sumaye 2019). Equations are of the general form "change in disease status over time equals births/deaths $\pm$ disease progression $\pm$ waning immunity $\pm$ vaccination":
+
+
+***Vector A***, based on Vector A of Sumaye 2019 and of the general form "change in life stage equals births (compartment P - including all births from susceptible vectors + proportion of non-vertical transmission births from infected, compartment Q - proportion of vertical transmission births from infected) - hatches - deaths" and "change in disease status equals hatches - deaths $\pm$ disease dynamics". **NOTE**: Sumaye 2019 did not model host-dependent transmission. Their disease dynamics was fully represented as $\omega_A \beta_A S_A$.
+
+
+***Vector B***, based on Vector B of Sumaye 2019, which is identical to Vector A except for the possibility of dormant eggs (***NOTE**: I can't find how they modeled that. Equations look identical to Vector A*). Equations are of the general form "change in life stage equals births (compartment P - including all births from susceptible vectors + proportion of non-vertical transmission births from infected, compartment Q - proportion of vertical transmission births from infected) - hatches - deaths" and "change in disease status equals hatches - deaths $\pm$ disease dynamics". **NOTE**: Sumaye 2019 did not model host-dependent transmission. Their disease dynamics was fully represented as $\omega_B \beta_B S_B$.
+
+\
 
 ### Sensitivity Analysis of Simplified RVF Transmission Model
 
@@ -35,11 +74,28 @@ source("https://raw.githubusercontent.com/cshelley/RVF.Vaxx/refs/heads/main/R/ru
 ```
 
 ```{r}
-#| label: sensitivity_plot
+#| label: sensitivity_plot_prep
 #| include: false
 
-source("https://raw.githubusercontent.com/cshelley/RVF.Vaxx/refs/heads/main/R/sensitivity-analysis-plot.R")
+  init = c(SH = 1000, IH = 0, RH = 0, VH = 100,
+           SM = 10000, IM = 20, RM = 0, VM = 100,
+           SA = 100000, IA = 200, PA = 0, QA = 0)
 
+parameter_names = c("nuH", "omega", "alphaH", "nuM", "muA", "alphaM",                     "tau", "rhoRM", "betaM", "rhoRH", "rhoVM", "muE",                     "betaAM", "betaMA", "betaHA", "rhoVH", "zeta",                        "betaAH")
+
+sensitivity <- run_sensitivity(state = init, 
+                               parameter_names = parameter_names,
+                               numLHS = 5000, times = 1:50, 
+                               model = rvf_sensitivity, rank = TRUE,                                  nboot = 100, conf = 0.95)
+
+PCC = sensitivity[[3]]
+```
+
+```{r}
+#| label: sensitivity_plot
+#| include: false
+#| file: https://raw.githubusercontent.com/cshelley/RVF.Vaxx/refs/heads/main/R/sensitivity-analysis-plot.R
+#| eval: true
 ```
 
 Figure 3: **Partial Rank Correlation Between Human Infections and Simplified Model Parameters.** Latin hypercube sensitivity analysis was performed using partial rank correlation coefficients of simplified model parameters on the number of infected humans on Day 50 of a simulated outbreak. Parameters most negatively correlated with increased human infections (red, lefthand side), representing potential points of intervention on disease transmission, include human vaccination (ρ_H), vector egg lay rate (ω), and human infectious days (α_H). Parameters most positively correlated in red show that human vaccination rate is the parameter most correlated with increased human infections include infection rate from vector to humans (β_AH), probability of vertical transmission from adult to egg (ζ), and waning immunity from vaccine (ρ_VH)."

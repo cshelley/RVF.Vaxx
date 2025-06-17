@@ -20,7 +20,7 @@ run_sensitivity <- function(state, parameter_names, numLHS, times, model,
   # Partial rank correlation calculation
   PCC <- pcc(X = LHS, y = unlist(y), rank = rank, nboot = nboot, conf = conf)
 
-  return(as.list(c(LHS, y, PCC)))
+  return(list(LHS, y, PCC$PRCC))
 }
 
 
