@@ -1,4 +1,5 @@
 library(FME)
+library(sensitivity)
 
 run_sensitivity <- function(state, parameter_names, numLHS, times, model,
                             rank = TRUE, nboot, conf) {
