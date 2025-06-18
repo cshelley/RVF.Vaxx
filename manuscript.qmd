@@ -12,7 +12,7 @@ webr:
 
 ## Full Model
 
-The full compartmental model for Rift Valley Fever models a two-host/two-vector system. Hosts include humans and mammals, each moving through disease progression compartments of susceptible (S), exposed (E), infected (I), and recovered (R). Vaccination occurs without regard to disease status, moving individuals into the $V_1$ compartment. However, vaccination does not provide full protection from infection for two weeks, at which point individuals move into the $V_2$ compartment. Waning immunity from natural infection and immunization is also considered in the model. Vectors include *Culex* and *Aedes* species, with adults moving from susceptible (S) to infectious (I). Susceptible adults lay non-infected eggs (P). Infectious adults may lay infected eggs (Q) or non-infected eggs (P).
+The full compartmental model for Rift Valley Fever models a two-host/two-vector system. Hosts include humans and mammals, each moving through disease progression compartments of susceptible (S), exposed (E), infected (I), and recovered (R). Vaccination occurs without regard to disease status, moving individuals into the $V_1$ compartment. However, vaccination does not provide full protection from infection for two weeks, and so individuals are susceptible to infection until that time, after which they move into the $V_2$ compartment. Waning immunity from natural infection and immunization is also considered in the model. Vectors include *Culex* and *Aedes* species, with adults moving from susceptible (S) to infectious (I). Susceptible adults lay non-infected eggs (P). Infectious adults may lay infected eggs (Q) or non-infected eggs (P).
 
 ![Figure 1: Full Compartmental Model](Aly_Figure1.png)
 
@@ -40,10 +40,11 @@ The compartmental model diagram can be translated into a series of 20 ordinary d
 
 $$
 \begin{aligned}
-\frac{dV_H}{dt} &= - \mu_H V_H - \rho_{HV} V_H + \nu_H*\nu_{takeH} (S_H + E_H + I_H + R_H) \\
-\frac{dS_H}{dt} &= - \mu_H S_H + \gamma_H N_H - S_H(\beta_{AH}I_A + \beta_{BH}I_B) + \rho_{HV} V_H + \rho_{HR} V_H - \nu_H*\nu_{takeH} S_H \\
-\frac{dE_H}{dt} &= - \mu_H E_H + S_H(\beta_{AH}I_A + \beta_{BH}I_B) - \xi_H E_H - \nu_H*\nu_{takeH} E_H \\
-\frac{dI_H}{dt} &= - \mu_H I_H - \delta_H I_H + \xi_H E_H - \alpha_H I_H - \nu_H*\nu_{takeH} I_H \\
+\frac{dV_{H1}}{dt} &= - \mu_H V_{H1} - \beta_{AH}V_{H1} \displaystyle\left( \frac{I_A}{N_A} + \frac{I_B}{N_B}\right) - \theta_H V_{H1} + \nu_H*\nu_{takeH} (S_H + E_H + I_H + R_H) \\
+\frac{dV_{H2}}{dt} &= -\mu_H V_{H2} + \theta_H V_{H2} - \rho_{VH} V_{H2} \\
+\frac{dS_H}{dt} &= - \mu_H S_H + \gamma_H N_H - S_H \displaystyle\left( \beta_{AH}\frac{I_A }{N_A}+ \beta_{BH}\frac{I_B}{N_B} \displaystyle\right) + \rho_{VH} V_{H2} + \rho_{RH} V_H - \nu_H*\nu_{takeH} S_H \\
+\frac{dE_H}{dt} &= - \mu_H E_H + S_H \displaystyle\left( \beta_{AH}\frac{I_A }{N_A}+ \beta_{BH}\frac{I_B}{N_B} \displaystyle\right) - \xi_H E_H - \nu_H*\nu_{takeH} E_H \\
+\frac{dI_H}{dt} &= - (\mu_H + \delta_H) I_H + \xi_H E_H - \alpha_H I_H - \nu_H*\nu_{takeH} I_H \\
 \frac{dR_H}{dt} &= - \mu_H R_H + \alpha_H I_H - \rho_{HR} V_H - \nu_H*\nu_{takeH} R_H
 \end{aligned}
 $$
@@ -52,11 +53,12 @@ $$
 
 $$
 \begin{aligned}
-\frac{dV_M}{dt} & = - \mu_M V_M - \rho_{MV} V_M + \nu_M*\nu_{takeM} (S_M + E_M + I_M + R_M) \\
-\frac{dS_M}{dt} & = - \mu_M S_M + [\gamma_1(N_M - I_M) + \gamma_2 I_M] - S_M(\beta_{AM}I_A + \beta_{BM}I_B) + \rho_{MV} V_M + \rho_{MR} V_M - \nu_M*\nu_{takeM} S_M \\
-\frac{dE_M}{dt} & = - \mu_M E_M + S_M(\beta_{AM}I_A + \beta_{BM}I_B) - \xi_M E_H - \nu_M*\nu_{takeM} E_M \\
-\frac{dI_M}{dt} & = - \mu_M I_M - \delta_M I_M + \xi_M E_M - \alpha_M I_M - \nu_M*\nu_{takeM} I_M \\
-\frac{dR_M}{dt} & = - \mu_M R_M + \alpha_M I_M - \rho_{MR} V_M - \nu_M*\nu_{takeM} R_M 
+\frac{dV_{M1}}{dt} &= - \mu_M V_{M1} - \beta_{AM}V_{M1} \displaystyle\left( \frac{I_A}{N_A} + \frac{I_B}{N_B}\right) - \theta_M V_{M1} + \nu_M*\nu_{takeM} (S_M + E_M + I_M + R_M) \\
+\frac{dV_{M2}}{dt} &= -\mu_M V_{M2} + \theta_M V_{M2} - \rho_{VM} V_{M2} \\
+\frac{dS_M}{dt} &= - \mu_M S_M + [\gamma_1(N_M - I_M) + \gamma_2 I_M] - S_m \displaystyle\left( \beta_{AM}\frac{I_A}{N_A} + \beta_{BM}\frac{I_B}{N_B} \displaystyle\right) + \rho_{VM} V_{M2} + \rho_{RM} V_M - \nu_M*\nu_{takeM} S_M \\
+\frac{dE_M}{dt} &= - \mu_M E_M + S_M \displaystyle\left( \beta_{AM}\frac{I_A}{N_A}+ \beta_{BM}\frac{I_B}{N_B} \displaystyle\right) - \xi_M E_M - \nu_M*\nu_{takeM} E_M \\
+\frac{dI_M}{dt} &= - (\mu_M + \delta_M) I_M + \xi_M E_M - \alpha_M I_M - \nu_M*\nu_{takeM} I_M \\
+\frac{dR_M}{dt} &= - \mu_M R_M + \alpha_M I_M - \rho_{MR} V_M - \nu_M*\nu_{takeM} R_M
 \end{aligned}
 $$
 
