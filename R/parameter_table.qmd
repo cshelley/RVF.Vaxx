@@ -1,0 +1,148 @@
+---
+title: "Parameter Table"
+format: html
+editor: visual
+---
+
+```{r}
+#| label: parameter_table
+#| eval: true
+#| echo: false
+
+library(gt)
+library(dplyr)
+library(knitr)
+
+                    # label
+parms <- data.frame(species = c(rep("Human", 12), 
+                                rep("Livestock", 13), 
+                                rep("Culex", 11), 
+                                rep("Aedes", 11)),
+                    
+                    label = c("nu_H", "nu_TH", "beta_HA", "beta_HB",
+                              "epsilon_H", "alpha_H", "rho_RH", "rho_VH", "b_H",                                "mu_H", "gamma_H", "theta_H",
+
+                              "nu_M", "nu_TM", "beta_MA", "beta_MB",
+                              "epsilon_M", "alpha_M", "rho_RM", "rho_VM", "b_M",                                "mu_M", "gamma_1", "gamma2", "theta_M",
+
+                              "beta_AH", "beta_AM", "tau_A", "zeta_A",
+                              "omega_A", "omegaA11", "kappaA", "mu_PA", "mu_SA",                                "mu_IA", "mu_QA",
+
+                              "beta_BH", "beta_BM", "tau_B", "zeta_B",
+                              "omega_B", "omegaB11", "kappa_B", "mu_PB", 
+                              "mu_SB", "mu_IB", "mu_QB"),
+                    
+                    description = c("human vaccination rate",
+                                    "human vaccine effectiveness",
+                                    "transmission rate from humans to Culex",
+                                    "transmission rate from humans to Aedes",
+                                    "human incubation period",
+                                    "human infectious period",
+                                    "waning immunity from natural infection",
+                                    "waning immunity from vaccination",
+                                    "vaccine booster rate",
+                                    "death rate",
+                                    "birth rate",
+                                    "delay to full vaccine effectiveness",
+
+                                    "livestock vaccination rate", 
+                                    "livestock vaccine effectiveness",
+                                    "transmission rate from livestock to Culex",
+                                    "transmission rate from livestock to Aedes",
+                                    "livestock incubation period", 
+                                    "livestock infectious period",
+                                    "waning immunity from natural infection",
+                                    "waning immunity from vaccination",
+                                    "vaccine booster rate",
+                                    "death rate",
+                                    "birth rate (noninfected livestock)",
+                                    "birth rate (infected livestock)",
+                                    "delay to full vaccine effectiveness",
+
+                                    "transmission from Culex to humans",
+                                    "transmission from Culex to livestock",
+                                    "Culex hatch rate",
+                                    "proportion of eggs infected by vertical                                                  transmission",
+                                    "Culex egg lay rate",
+                                    "??",
+                                    "Culex carrying capacity",
+                                    "mortality rate of noninfected eggs",
+                                    "mortality rate of noninfected adults",
+                                    "mortality rate of infectious adults",
+                                    "mortality rate of infected eggs",
+
+                                    "transmission from Aedes to humans",
+                                    "transmission from Aedes to livestock",
+                                    "Aedes hatch rate",
+                                    "proportion of eggs infected by vertical                                                transmission",
+                                    "Aedes egg lay rate",
+                                    "??",
+                                    "Aedes carrying capacity",
+                                    "mortality rate of noninfected eggs",
+                                    "mortality rate of noninfected adults",
+                                    "mortality rate of infectious adults",
+                                    "mortality rate of infected eggs"),
+                    
+                    point_estimate = c("--", "90%", 0.81, 0.89, "4 days*",
+                                       "4 days*", "900 days", ">5 years", 
+                                       "5 years", "70 years",
+                                       "1.5 children/person in lifetime", 
+                                       "14 days",
+                      
+                                       "--", "90%", 0.81, 0.89, "42 hours",
+                                       "4 days*", "900 days", "", "", 
+                                       "5 years^", "1.5/lifetime*",           
+                                       "0.1*1.5/lifetime*", "14 days", 
+                      
+                                       rep("", 22)),
+
+                   range = c("[0 - 100]%", "[85-95]%", "0.78-0.84", "0.77-1.00",
+                      "[2-6] days^", "[2-7] days^", "", "", "", "40-90 years^",
+                      "", "",
+                      
+                      "[0-100]%", "[85-100]%", "[78-84]%", "[77-100]%",
+                      "12-72 hours", "1-7 days^", "", "", "", "1-10 years^",
+                      "0-2.3/lifetime", "", "",
+                      
+                      rep("", 22)), 
+                    
+                   source = c("Aly et al", "Aly et al", "Sumaye", "Sumaye",  
+                              "*Sumaye ^Literature", "*Sumaye ^Literature",     
+                              "Sumaye",  "Aly at al (assumed)",
+                              "Aly et al (assumed)", "^Literature", 
+                              "^Literature", "Aly et al", 
+                      
+                              "Aly et al", "Aly et al", "Sumaye", "Sumaye",  
+                              "Sumaye", "*Sumaye ^Literature", "Sumaye", "", "", 
+                              "Literature", "*Sumaye ^Literaure", "Sumaye", 
+                              "Aly et al",
+                      
+                              rep("", 22)))
+
+gt_parameters <- 
+  parms |> 
+    select(label, description, point_estimate, range, source) |>
+  
+  gt(rowname_col = "label") |>
+    cols_label(label = "Parameter", 
+               description = "Description", 
+               point_estimate = "Point Estimate", 
+               range = "Range", 
+               source = "Source") |>
+  
+    tab_row_group(label = "Aedes",
+                  rows = 37:47) |>
+    tab_row_group(label = "Culex", 
+                  rows = 26:36) |>
+    tab_row_group(label = "Livestock", 
+                  rows = 13:25) |>
+    tab_row_group(label = "Humans", 
+                  rows = 1:12) |>
+  
+    tab_stubhead(label = "Parameter")
+  
+
+
+  
+gt_parameters
+```

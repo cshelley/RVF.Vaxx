@@ -1,6 +1,6 @@
 ---
 title: "Rift Valley Fever Compartmental Model"
-format: docx
+format: pdf
 editor: visual
 
 author: Courtney D. Shelley, PhD
