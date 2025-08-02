@@ -19,32 +19,12 @@
 #' @examples
 #' library(deSolve)
 #'
-#' state = c(VH1 = 0, VH2 = 0, SH = 10000, EH = 0, IH = 2, RH = 0,
-#'           SA = 175000, IA = 100, QA = 0, PA = 0,
-#'           SB = 175000, IB = 100, QB = 0, PB = 0,
-#'           VM1 = 0, VM2 = 0, SM = 100000, EM = 0, IM = 200, RM = 0)
-#'
-#' parameters = c(nuH = 0.001, nuTH = 1, betaHA = 0.89, betaHB = 0.89,
-#'                xiH = 1/4, alphaH = 1/(3*0.99), rhoRH = 1/900, rhoVH = 1/360,
-#'                muH = 4/(2*50*360), gammaH = 4/(2*50*360), thetaH = 1/14,
-#'
-#'                nuM = 0.001, nuTM = 1, betaMA = 0.89, betaMB = 0.89,
-#'                xiM = 24/3.25, alphaM = 1/(3*0.95), rhoRM = 1/900,
-#'                rhoVM = 1/360, muM = 0.0008, gamma1 = 0.00082,
-#'                gamma2 = 0.000082, thetaM = 1/14,
-#'
-#'                betaAH = 0.01, betaAM = 0.01, tauA = 0.2, zetaA = 0.5,
-#'                omegaA = 0.01, kappaA = 175000, gammaA = 10, omegaA11 = 0.01,
-#'                muPA = 0.00001, muSA = 1/3, muIA = 1/3, muQA = 0.00001,
-#'
-#'                betaBH = 0.01, betaBM = 0.01, tauB = 0.2, zetaB = 0.05,
-#'                omegaB = 0.01, kappaB = 175000, gammaB = 25, omegaB11 = 0.01,
-#'                muPB = 0.005, muSB = 0.1, muIB = 0.1, muQB = 0.005)
-#'
+#' state <- build_state()
+#' parameters <- build_parameters()
 #' times = seq(1, 500)
 #'
 #' # run model and convert output to a data.frame
-#' ode(y = state, times = times, func = rvf_vaxx, parms = parameters) |>
+#' deSolve::ode(y = state, times = times, func = rvf_vaxx, parms = parameters) |>
 #'   data.frame()
 
 rvf_vaxx <- function(t, state, parameters) {
@@ -60,16 +40,16 @@ rvf_vaxx <- function(t, state, parameters) {
     # Human Hosts:
     dVH1 = nuH*nuTH*(SH + EH + IH + RH) - muH*VH1 - thetaH*VH1
     dVH2 = -muH*VH2 + thetaH*VH1 - rhoVH*VH2
-    dSH = gammaH*NH - betaAH*SH*IA/Na - betaBH*SH*IB/NB + rhoRH*RH + rhoVH*VH2 - nuH*nuTH*SH - muH*SH
-    dEH = betaAH*SH*IA/Na + betaBH*SH*IB/NB - xiH*EH - nuH*nuTH*EH - muH*EH
+    dSH = gammaH*NH - betaAH*SH*IA - betaBH*SH*IB + rhoRH*RH + rhoVH*VH2 - nuH*nuTH*SH - muH*SH
+    dEH = betaAH*SH*IA + betaBH*SH*IB - xiH*EH - nuH*nuTH*EH - muH*EH
     dIH = xiH*EH - alphaH*IH - nuH*nuTH*IH - muH*IH
     dRH = alphaH*IH - rhoRH*RH - nuH*nuTH*RH - muH*RH
 
     # Mammalian Hosts:
     dVM1 = nuM*nuTM*(SM + EM + IM + RM) - muM*VM1 - thetaM*VM1
     dVM2 = -muM*VM2 + thetaM*VM1 - rhoVM*VM2
-    dSM = (gamma1*(NM-IM) + gamma2*IM) - betaAM*SM*IA/Na - betaBM*SM*IB/NB + rhoRM*RM + rhoVM*VM2 - nuM*nuTM*SM - muM*SM
-    dEM = betaAM*SM*IA/Na + betaBM*SM*IB/NB - xiM*EM - nuM*nuTM*EM - muM*EM
+    dSM = (gamma1*(NM-IM) + gamma2*IM) - betaAM*SM*IA - betaBM*SM*IB + rhoRM*RM + rhoVM*VM2 - nuM*nuTM*SM - muM*SM
+    dEM = betaAM*SM*IA + betaBM*SM*IB - xiM*EM - nuM*nuTM*EM - muM*EM
     dIM = xiM*EM - alphaM*IM - nuM*nuTM*IM - muM*IM
     dRM = alphaM*IM - rhoRM*RM - nuM*nuTM*RM - muM*RM
 
@@ -93,3 +73,4 @@ rvf_vaxx <- function(t, state, parameters) {
            dVM1, dVM2, dSM, dEM, dIM, dRM))
   })
 }
+
